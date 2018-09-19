@@ -84,17 +84,22 @@ namespace PomodoroTimer {
         private void SetupAppWindow() {
             var appView = ApplicationView.GetForCurrentView();
             appView.SetPreferredMinSize(new Size(230, 250));
-            //appView.Title = "Pippo";
 
             var pomodoroBackColor = (Windows.UI.Color)Current.Resources["PomodoroBackgroundColor"];
+            var pomodoroHoverBackColor = (Windows.UI.Color)Current.Resources["PomodoroHoverBackgroundColor"];
+            var pomodoroDisabledBackColor = (Windows.UI.Color)Current.Resources["PomodoroDisabledBackgroundColor"];
+
             var pomodoroForeColor = (Windows.UI.Color)Current.Resources["PomodoroForegroundColor"];
 
-            var pomodoroHoverBackColor = (Windows.UI.Color)Current.Resources["PomodoroHoverBackgroundColor"];
-
-            appView.TitleBar.BackgroundColor = pomodoroBackColor;
-            appView.TitleBar.ButtonBackgroundColor = pomodoroBackColor;
-            appView.TitleBar.ButtonForegroundColor = pomodoroForeColor;
-            appView.TitleBar.ButtonHoverBackgroundColor = pomodoroHoverBackColor;
+            var titleBar = appView.TitleBar;
+            titleBar.BackgroundColor = pomodoroBackColor;
+            titleBar.ForegroundColor = pomodoroForeColor;
+            titleBar.InactiveBackgroundColor = pomodoroDisabledBackColor;
+            titleBar.InactiveForegroundColor = pomodoroForeColor;
+            titleBar.ButtonBackgroundColor = pomodoroBackColor;
+            titleBar.ButtonForegroundColor = pomodoroForeColor;
+            titleBar.ButtonHoverBackgroundColor = pomodoroHoverBackColor;
+            titleBar.ButtonInactiveBackgroundColor = pomodoroDisabledBackColor;
 
             var coreTitleBar = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
