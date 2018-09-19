@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,6 +38,8 @@ namespace PomodoroTimer {
 
             //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             //ApplicationView.PreferredLaunchViewSize = new Size(300, 340);
+
+            DatabaseAccess.Initialize();
         }
 
         /// <summary>
