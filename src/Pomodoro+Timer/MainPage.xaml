@@ -47,12 +47,37 @@
                 />
         </Viewbox>
 
-        <Button
+        <ToggleButton
             Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Content="Start"
-            />
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            >
+            <ToggleButton.Template>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Path x:Name="IconPath"
+                          Fill="White" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonGroups">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Target="IconPath.Data">
+                                            <Setter.Value>m 0 0 v 300 l 300 -150 z</Setter.Value>
+                                        </Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter Target="IconPath.Data">
+                                            <Setter.Value>m 81.441963 130.28162 h 7.000001 c 0.830999 0 1.499999 0.669 1.499999 1.5 v 7 c 0 0.831 -0.669 1.5 -1.499999 1.5 h -7.000001 c -0.831 0 -1.5 -0.669 -1.5 -1.5 v -7 c 0 -0.831 0.669 -1.5 1.5 -1.5 z</Setter.Value>
+                                        </Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Path>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
 
         <TextBlock
             Text="00:00"
