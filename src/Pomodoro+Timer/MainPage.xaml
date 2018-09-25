@@ -82,9 +82,9 @@
         <TextBlock
             Text="00:00"
             Grid.Row="2"
+            FontFamily="{StaticResource PTMonoFont}"
             FontSize="20"
             Foreground="#FFEDEADC"
-            FontWeight="Bold"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             />

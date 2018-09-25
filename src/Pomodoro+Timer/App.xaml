@@ -26,5 +26,9 @@
         <SolidColorBrush x:Key="PomodoroDisabledBackgroundBrush" Color="{StaticResource PomodoroDisabledBackgroundColor}" />
 
         <Color x:Key="PomodoroForegroundColor">#FFEDEADC</Color>
+        
+        <!-- Fonts -->
+        <FontFamily x:Key="FredokaFont">ms-appx:///Assets/Fonts/FredokaOne-Regular.otf#Fredoka One</FontFamily>
+        <FontFamily x:Key="PTMonoFont">ms-appx:///Assets/Fonts/PTM55FT-basic-latin.ttf#PT Mono</FontFamily>
     </Application.Resources>
 </Application>
