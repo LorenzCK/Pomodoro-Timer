@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PomodoroTimer.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 namespace PomodoroTimer {
@@ -20,11 +22,15 @@ namespace PomodoroTimer {
     /// </summary>
     public sealed partial class MainPage : Page {
 
+        public TimerViewModel Model { get; private set; }
+
         public MainPage() {
             this.InitializeComponent();
             TimerProgressBar.Value = 75;
 
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
+
+            DataContext = Model = new TimerViewModel();
         }
 
         private void TitleBar_LayoutMetricsChanged(Windows.ApplicationModel.Core.CoreApplicationViewTitleBar sender, object args) {
@@ -39,6 +45,10 @@ namespace PomodoroTimer {
             System.Diagnostics.Debug.WriteLine("On navigated to, title bar height: " + coreTitleBar.Height);
         }
 
+        private void ButtonToggle_Click(object sender, RoutedEventArgs e) {
+            var sb = (Storyboard)ButtonToggle.Resources[(ButtonToggle.IsChecked.GetValueOrDefault(false)) ? "ActivateStoryboard" : "DectivateStoryboard"];
+            sb.Begin();
+        }
     }
 
 }

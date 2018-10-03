@@ -29,15 +29,15 @@ namespace PomodoroTimer {
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App() {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
-
-            if(ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3)) {
-                FocusVisualKind = FocusVisualKind.Reveal;
-            }
+            InitializeComponent();
+            Suspending += OnSuspending;
 
             //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             //ApplicationView.PreferredLaunchViewSize = new Size(300, 340);
+
+            if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3)) {
+                FocusVisualKind = FocusVisualKind.Reveal;
+            }
 
             DatabaseAccess.Initialize();
         }

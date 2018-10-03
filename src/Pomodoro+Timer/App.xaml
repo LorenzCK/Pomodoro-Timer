@@ -15,6 +15,12 @@
         <vc:InactiveToBackgroundBrush
             x:Key="InactiveToBackgroundBrushConverter"
             />
+        <vc:TrueToCollapsed
+            x:Key="TrueToCollapsedConverter"
+            />
+        <vc:FalseToCollapsed
+            x:Key="FalseToCollapsedConverter"
+            />
 
         <!-- Colors -->
         <Color x:Key="PomodoroBackgroundColor">#FFA33C46</Color>
@@ -26,7 +32,16 @@
         <SolidColorBrush x:Key="PomodoroDisabledBackgroundBrush" Color="{StaticResource PomodoroDisabledBackgroundColor}" />
 
         <Color x:Key="PomodoroForegroundColor">#FFEDEADC</Color>
+        <SolidColorBrush x:Key="PomodoroForegroundBrush" Color="{StaticResource PomodoroForegroundColor}" />
         
+        <!-- Styles -->
+        <Style x:Key="RevealButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
+            <Setter Property="Background" Value="#00000000" />
+        </Style>
+        
+        <!-- Animations -->
+        <CubicEase x:Key="CubicOutEasing" EasingMode="EaseOut" />
+
         <!-- Fonts -->
         <FontFamily x:Key="FredokaFont">ms-appx:///Assets/Fonts/FredokaOne-Regular.otf#Fredoka One</FontFamily>
         <FontFamily x:Key="PTMonoFont">ms-appx:///Assets/Fonts/PTM55FT-basic-latin.ttf#PT Mono</FontFamily>

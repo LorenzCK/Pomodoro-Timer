@@ -11,6 +11,11 @@
     <Grid
         Background="{Binding Path=IsInactive, Mode=OneWay, Source={StaticResource ApplicationViewModel}, Converter={StaticResource InactiveToBackgroundBrushConverter}}"
         >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="32" />
             <RowDefinition Height="*" />
@@ -18,6 +23,7 @@
         </Grid.RowDefinitions>
 
         <Image
+            Grid.Column="0"
             Grid.Row="0"
             HorizontalAlignment="Left"
             Width="28"
@@ -27,66 +33,252 @@
             />
 
         <Viewbox
+            Grid.ColumnSpan="3"
             Grid.Row="1"
-            Margin="20"
+            Margin="16"
             Stretch="Uniform"
             StretchDirection="Both"
             MaxWidth="400"
             MaxHeight="400"
             >
-            <controls:RadialProgressBar
-                x:Name="TimerProgressBar"
-                Foreground="#FFEDEADC"
-                Outline="#22EDEADC"
+            <Grid
                 Width="200"
                 Height="200"
-                Thickness="15"
-                Minimum="0"
-                Maximum="100"
-                Value="50"
-                />
+                >
+                <controls:RadialProgressBar
+                    x:Name="TimerProgressBar"
+                    Foreground="#FFEDEADC"
+                    Outline="#22EDEADC"
+                    Width="200"
+                    Height="200"
+                    Thickness="15"
+                    Minimum="0"
+                    Maximum="100"
+                    Value="50"
+                    />
+
+                <ToggleButton
+                    x:Name="ButtonToggle"
+                    Width="100"
+                    Height="100"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    IsChecked="{x:Bind Path=Model.IsRunning, Mode=TwoWay}"
+                    Click="ButtonToggle_Click"
+                    RenderTransformOrigin="0.5,0.5"
+                    >
+                    <ToggleButton.RenderTransform>
+                        <RotateTransform x:Name="ButtonToggleRotation" Angle="0" />
+                    </ToggleButton.RenderTransform>
+
+                    <ToggleButton.Resources>
+                        <Storyboard x:Key="ActivateStoryboard">
+                            <DoubleAnimation
+                                Storyboard.TargetName="ButtonToggleRotation"
+                                Storyboard.TargetProperty="Angle"
+                                To="360"
+                                Duration="0:0:1"
+                                >
+                                <DoubleAnimation.EasingFunction>
+                                    <BounceEase Bounces="2" EasingMode="EaseOut" Bounciness="4" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                        <Storyboard x:Key="DectivateStoryboard">
+                            <DoubleAnimation
+                                Storyboard.TargetName="ButtonToggleRotation"
+                                Storyboard.TargetProperty="Angle"
+                                To="0"
+                                Duration="0:0:0.2"
+                                >
+                                <DoubleAnimation.EasingFunction>
+                                    <QuadraticEase EasingMode="EaseInOut" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </ToggleButton.Resources>
+                    
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Grid x:Name="RootGrid"
+                                  Background="Transparent"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  >
+                                <Grid.RenderTransform>
+                                    <ScaleTransform ScaleX="0.95" ScaleY="0.95" />
+                                </Grid.RenderTransform>
+
+                                <Path x:Name="PathPlay"
+                                      Fill="{StaticResource PomodoroForegroundBrush}"
+                                      Stretch="Uniform"
+                                      Data="M 4.9707031 2 A 1.0001 1.0001 0 0 0 4 3 v 18 a 1.0001 1.0001 0 0 0 1.5410156 0.841797 l 14.0000004 -9 a 1.0001 1.0001 0 0 0 0 -1.683594 L 5.5410156 2.1582031 A 1.0001 1.0001 0 0 0 4.9707031 2 Z M 6 4.8320312 17.150391 12 6 19.167969 Z"
+                                      Margin="8,0,0,0"
+                                      />
+
+                                <Path x:Name="PathStop"
+                                      Fill="{StaticResource PomodoroForegroundBrush}"
+                                      Stretch="Uniform"
+                                      Data="M 4.8007812 21 C 3.8191488 21 3 20.180851 3 19.199219 V 4.8007812 C 3 3.8191488 3.8191488 3 4.8007812 3 H 19.199219 C 20.180851 3 21 3.8191488 21 4.8007812 V 19.199219 C 21 20.180851 20.180851 21 19.199219 21 Z m 0 -1.800781 H 19.199219 V 4.8007812 H 4.8007812 Z"
+                                      Visibility="Collapsed"
+                                      />
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="0.95" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="0.95" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Checked">
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="0.95" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="0.95" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                            
+                                            <VisualState.Setters>
+                                                <Setter Target="PathPlay.Visibility" Value="Collapsed" />
+                                                <Setter Target="PathStop.Visibility" Value="Visible" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+
+                                        <VisualState x:Name="CheckedPointerOver">
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                    >
+                                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                            
+                                            <VisualState.Setters>
+                                                <Setter Target="PathPlay.Visibility" Value="Collapsed" />
+                                                <Setter Target="PathStop.Visibility" Value="Visible" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+
+                                        <VisualState x:Name="CheckedPressed">
+                                            <VisualState.Setters>
+                                                <Setter Target="PathPlay.Visibility" Value="Collapsed" />
+                                                <Setter Target="PathStop.Visibility" Value="Visible" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+
+                                        <VisualStateGroup.Transitions>
+                                            <VisualTransition To="Normal"
+                                                              GeneratedDuration="0:0:0.4"
+                                                              GeneratedEasingFunction="{StaticResource CubicOutEasing}"
+                                                              />
+
+                                            <VisualTransition To="PointerOver"
+                                                              GeneratedDuration="0:0:0.05"
+                                                              />
+
+                                            <VisualTransition To="Checked"
+                                                              GeneratedDuration="0:0:0.4"
+                                                              GeneratedEasingFunction="{StaticResource CubicOutEasing}"
+                                                              />
+
+                                            <VisualTransition To="CheckedPointerOver"
+                                                              GeneratedDuration="0:0:0.05"
+                                                              />
+                                        </VisualStateGroup.Transitions>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+            </Grid>
         </Viewbox>
 
-        <ToggleButton
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
+        <Button
+            Grid.Column="0"
+            Grid.Row="2"
+            Margin="4,0,0,4"
+            Padding="2"
+            Width="28"
+            Height="28"
+            Style="{StaticResource RevealButtonStyle}"
             >
-            <ToggleButton.Template>
-                <ControlTemplate TargetType="ToggleButton">
-                    <Path x:Name="IconPath"
-                          Fill="White" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonGroups">
-                                <VisualState x:Name="Normal">
-                                    <VisualState.Setters>
-                                        <Setter Target="IconPath.Data">
-                                            <Setter.Value>m 0 0 v 300 l 300 -150 z</Setter.Value>
-                                        </Setter>
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState x:Name="Checked">
-                                    <VisualState.Setters>
-                                        <Setter Target="IconPath.Data">
-                                            <Setter.Value>m 81.441963 130.28162 h 7.000001 c 0.830999 0 1.499999 0.669 1.499999 1.5 v 7 c 0 0.831 -0.669 1.5 -1.499999 1.5 h -7.000001 c -0.831 0 -1.5 -0.669 -1.5 -1.5 v -7 c 0 -0.831 0.669 -1.5 1.5 -1.5 z</Setter.Value>
-                                        </Setter>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Path>
-                </ControlTemplate>
-            </ToggleButton.Template>
-        </ToggleButton>
+            <Path
+                Fill="{StaticResource PomodoroForegroundBrush}"
+                Stretch="Uniform"
+                Data="M 12 1 C 5.9367124 1 1 5.9367124 1 12 C 1 18.063288 5.9367124 23 12 23 C 18.063288 23 23 18.063288 23 12 C 23 5.9367124 18.063288 1 12 1 z M 12 3 C 16.982407 3 21 7.0175926 21 12 C 21 16.982407 16.982407 21 12 21 C 7.0175926 21 3 16.982407 3 12 C 3 7.0175926 7.0175926 3 12 3 z M 12 7 A 1.0001 1.0001 0 1 0 12 9 A 1.0001 1.0001 0 1 0 12 7 z M 11.984375 10.986328 A 1.0001 1.0001 0 0 0 11 12 L 11 16 A 1.0001 1.0001 0 1 0 13 16 L 13 12 A 1.0001 1.0001 0 0 0 11.984375 10.986328 z"
+                />
+        </Button>
 
         <TextBlock
-            Text="00:00"
+            Grid.Column="1"
             Grid.Row="2"
+            Text="00:00"
             FontFamily="{StaticResource PTMonoFont}"
             FontSize="20"
             Foreground="#FFEDEADC"
             HorizontalAlignment="Center"
-            VerticalAlignment="Top"
+            VerticalAlignment="Center"
             />
+
+        <Button
+            Grid.Column="2"
+            Grid.Row="2"
+            Margin="0,0,4,4"
+            Padding="2"
+            Width="28"
+            Height="28"
+            HorizontalAlignment="Right"
+            Style="{StaticResource RevealButtonStyle}"
+            >
+            <Path
+                Fill="{StaticResource PomodoroForegroundBrush}"
+                Stretch="Uniform"
+                Data="M 12 0 C 10.35499 0 9 1.3549904 9 3 L 9 3.1660156 C 8.9990241 3.410702 8.8447498 3.6111784 8.6308594 3.7226562 A 1.0001 1.0001 0 0 0 8.515625 3.765625 C 8.2697676 3.8741317 7.9909381 3.8226839 7.7988281 3.6347656 L 7.7480469 3.5839844 C 6.5852505 2.4198937 4.6675397 2.4192333 3.5039062 3.5820312 C 2.3391689 4.7454737 2.3391689 6.6646826 3.5039062 7.828125 L 3.5546875 7.8789062 C 3.7426058 8.0710162 3.7940535 8.3498458 3.6855469 8.5957031 A 1.0001 1.0001 0 0 0 3.6621094 8.6542969 C 3.5689169 8.9076836 3.3363132 9.0737647 3.0664062 9.0800781 L 3 9.0800781 C 1.3549904 9.0800781 0 10.435069 0 12.080078 C 0 13.725088 1.3549904 15.080078 3 15.080078 L 3.1660156 15.080078 C 3.427769 15.081078 3.6586049 15.23402 3.7617188 15.474609 A 1.0001 1.0001 0 0 0 3.765625 15.484375 C 3.8741317 15.730232 3.822684 16.009062 3.6347656 16.201172 L 3.5839844 16.251953 C 2.4198937 17.414749 2.4192302 19.33246 3.5820312 20.496094 C 3.5820312 20.496094 3.5839844 20.496094 3.5839844 20.496094 C 3.5839844 20.496094 3.5839844 20.498047 3.5839844 20.498047 C 4.7476179 21.660845 6.6653286 21.660231 7.828125 20.496094 L 7.8789062 20.445312 C 8.0710162 20.257395 8.3498458 20.205946 8.5957031 20.314453 A 1.0001 1.0001 0 0 0 8.6542969 20.337891 C 8.9076836 20.431081 9.0737647 20.663687 9.0800781 20.933594 L 9.0800781 21 C 9.0800781 22.64501 10.435069 24 12.080078 24 C 13.725088 24 15.080078 22.64501 15.080078 21 L 15.080078 20.833984 C 15.081078 20.572231 15.23402 20.341395 15.474609 20.238281 A 1.0001 1.0001 0 0 0 15.484375 20.234375 C 15.730232 20.125868 16.009062 20.177315 16.201172 20.365234 L 16.251953 20.416016 C 17.414749 21.580106 19.33246 21.58072 20.496094 20.417969 L 20.496094 20.416016 C 21.658811 19.253084 21.66034 17.337004 20.498047 16.173828 L 20.496094 16.171875 L 20.445312 16.121094 C 20.257395 15.928984 20.205946 15.650154 20.314453 15.404297 A 1.0001 1.0001 0 0 0 20.318359 15.394531 C 20.42144 15.154017 20.652309 15.001044 20.914062 15 L 21 15 C 22.64501 15 24 13.64501 24 12 C 24 10.35499 22.64501 9 21 9 L 20.833984 9 C 20.589298 8.9990241 20.388822 8.8447498 20.277344 8.6308594 A 1.0001 1.0001 0 0 0 20.234375 8.515625 C 20.125868 8.2697676 20.177316 7.9909381 20.365234 7.7988281 L 20.416016 7.7480469 C 21.580106 6.5852505 21.58072 4.6675397 20.417969 3.5039062 C 19.254526 2.3391689 17.335317 2.3391689 16.171875 3.5039062 L 16.121094 3.5546875 C 15.928984 3.7426058 15.650154 3.7940535 15.404297 3.6855469 A 1.0001 1.0001 0 0 0 15.394531 3.6816406 C 15.153929 3.5785307 15.001044 3.3476909 15 3.0859375 L 15 3 C 15 1.3549904 13.64501 0 12 0 z M 12 2 C 12.564129 2 13 2.4358706 13 3 L 13 3.0898438 A 1.0001 1.0001 0 0 0 13 3.09375 C 13.0042 4.1453718 13.636181 5.0993955 14.601562 5.515625 C 15.588684 5.9485761 16.748714 5.7383737 17.519531 4.984375 A 1.0001 1.0001 0 0 0 17.527344 4.9765625 L 17.587891 4.9179688 A 1.0001 1.0001 0 0 0 17.587891 4.9160156 C 17.986905 4.5165575 18.602939 4.5165575 19.001953 4.9160156 A 1.0001 1.0001 0 0 0 19.003906 4.9179688 C 19.403364 5.3169826 19.403364 5.9330173 19.003906 6.3320312 A 1.0001 1.0001 0 0 0 19.001953 6.3320312 L 18.943359 6.3925781 A 1.0001 1.0001 0 0 0 18.935547 6.4003906 C 18.237336 7.1141656 18.011255 8.1607403 18.324219 9.0957031 A 1.0001 1.0001 0 0 0 18.400391 9.3945312 C 18.815412 10.362883 19.772639 10.995798 20.826172 11 A 1.0001 1.0001 0 0 0 20.830078 11 L 21 11 C 21.564129 11 22 11.435871 22 12 C 22 12.564129 21.564129 13 21 13 L 20.910156 13 A 1.0001 1.0001 0 0 0 20.90625 13 C 19.854628 13.0042 18.900605 13.636181 18.484375 14.601562 C 18.051424 15.588684 18.261626 16.748714 19.015625 17.519531 A 1.0001 1.0001 0 0 0 19.023438 17.527344 L 19.082031 17.587891 A 1.0001 1.0001 0 0 0 19.083984 17.587891 C 19.483442 17.986905 19.483442 18.602939 19.083984 19.001953 A 1.0001 1.0001 0 0 0 19.082031 19.003906 C 18.683017 19.403364 18.066983 19.403364 17.667969 19.003906 A 1.0001 1.0001 0 0 0 17.667969 19.001953 L 17.607422 18.943359 A 1.0001 1.0001 0 0 0 17.599609 18.935547 C 16.828792 18.181548 15.668761 17.971346 14.681641 18.404297 C 13.716259 18.820526 13.084272 19.77455 13.080078 20.826172 A 1.0001 1.0001 0 0 0 13.080078 20.830078 L 13.080078 21 C 13.080078 21.564129 12.644208 22 12.080078 22 C 11.515949 22 11.080078 21.564129 11.080078 21 L 11.080078 20.910156 A 1.0001 1.0001 0 0 0 11.080078 20.886719 C 11.054968 19.813111 10.372293 18.863135 9.3710938 18.480469 C 8.3897627 18.062736 7.2444231 18.268339 6.4804688 19.015625 A 1.0001 1.0001 0 0 0 6.4726562 19.023438 L 6.4121094 19.082031 A 1.0001 1.0001 0 0 0 6.4121094 19.083984 C 6.0130954 19.483442 5.3970608 19.483442 4.9980469 19.083984 A 1.0001 1.0001 0 0 0 4.9960938 19.082031 C 4.5966356 18.683017 4.5966356 18.066983 4.9960938 17.667969 A 1.0001 1.0001 0 0 0 4.9980469 17.667969 L 5.0566406 17.607422 A 1.0001 1.0001 0 0 0 5.0644531 17.599609 C 5.8184518 16.828792 6.0286542 15.668761 5.5957031 14.681641 C 5.1794736 13.716259 4.2254499 13.084272 3.1738281 13.080078 A 1.0001 1.0001 0 0 0 3.1699219 13.080078 L 3 13.080078 C 2.4358706 13.080078 2 12.644208 2 12.080078 C 2 11.515949 2.4358706 11.080078 3 11.080078 L 3.0898438 11.080078 A 1.0001 1.0001 0 0 0 3.1132812 11.080078 C 4.1868888 11.05497 5.1368653 10.372293 5.5195312 9.3710938 C 5.9372641 8.3897627 5.7316606 7.2444231 4.984375 6.4804688 A 1.0001 1.0001 0 0 0 4.9765625 6.4726562 L 4.9179688 6.4121094 A 1.0001 1.0001 0 0 0 4.9160156 6.4121094 C 4.5165575 6.0130954 4.5165575 5.3970608 4.9160156 4.9980469 A 1.0001 1.0001 0 0 0 4.9179688 4.9960938 C 5.3169826 4.5966356 5.9330174 4.5966356 6.3320312 4.9960938 A 1.0001 1.0001 0 0 0 6.3320312 4.9980469 L 6.3925781 5.0566406 A 1.0001 1.0001 0 0 0 6.4003906 5.0644531 C 7.115059 5.7635281 8.1637632 5.9905008 9.0996094 5.6757812 A 1.0001 1.0001 0 0 0 9.3945312 5.5996094 C 10.362883 5.1845865 10.995798 4.2273606 11 3.1738281 A 1.0001 1.0001 0 0 0 11 3.1699219 L 11 3 C 11 2.4358706 11.435871 2 12 2 z M 12 8 C 9.8027056 8 8 9.8027056 8 12 C 8 14.197294 9.8027056 16 12 16 C 14.197294 16 16 14.197294 16 12 C 16 9.8027056 14.197294 8 12 8 z M 12 10 C 13.116414 10 14 10.883586 14 12 C 14 13.116414 13.116414 14 12 14 C 10.883586 14 10 13.116414 10 12 C 10 10.883586 10.883586 10 12 10 z"
+                />
+        </Button>
     </Grid>
 </Page>
