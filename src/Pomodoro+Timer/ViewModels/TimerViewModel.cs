@@ -18,10 +18,6 @@ namespace PomodoroTimer.ViewModels {
             }
         }
 
-        public void ToggleTimer() {
-            //IsRunning = !IsRunning;
-        }
-
     }
 
 }
