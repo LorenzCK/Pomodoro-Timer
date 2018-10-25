@@ -41,18 +41,42 @@ namespace PomodoroTimer {
             if(vr.CurrentVersion < 1 && vr.DesiredVersion >= 1) {
                 Debug.WriteLine("Upgrading data to v1");
 
-                if(Sql.sqlite3_prepare_v2(_db, "CREATE TABLE Runs (`Start` TEXT NOT NULL, `End` TEXT, `Seconds` INTEGER)", out SQLitePCL.sqlite3_stmt stmt) != Sql.SQLITE_OK) {
-                    throw new ArgumentException("Cannot prepare SQL statement");
-                }
-                if(Sql.sqlite3_step(stmt) != Sql.SQLITE_DONE) {
-                    throw new ArgumentException("Cannot execute SQL step");
-                }
-                if(Sql.sqlite3_finalize(stmt) != Sql.SQLITE_OK) {
-                    throw new ArgumentException("Cannot finalize SQL statement");
-                }
+                PerformAction("CREATE TABLE Runs (`Start` TEXT NOT NULL, `End` TEXT, `Seconds` INTEGER)");
             }
 
             deferral.Complete();
+        }
+
+        /// <summary>
+        /// Performs a SQL query without results.
+        /// </summary>
+        private static void PerformAction(string sql) {
+            if (Sql.sqlite3_prepare_v2(_db, sql, out SQLitePCL.sqlite3_stmt stmt) != Sql.SQLITE_OK) {
+                throw new ArgumentException($"Cannot prepare SQL statement '{sql}'");
+            }
+            if (Sql.sqlite3_step(stmt) != Sql.SQLITE_DONE) {
+                throw new ArgumentException("SQL statement did not step to done");
+            }
+            if (Sql.sqlite3_finalize(stmt) != Sql.SQLITE_OK) {
+                throw new ArgumentException("Cannot finalize SQL statement");
+            }
+        }
+
+        /// <summary>
+        /// Performs an insert SQL query and returns row ID.
+        /// </summary>
+        private static long PerformInsert(string sql) {
+            if (Sql.sqlite3_prepare_v2(_db, sql, out SQLitePCL.sqlite3_stmt stmt) != Sql.SQLITE_OK) {
+                throw new ArgumentException($"Cannot prepare SQL statement '{sql}'");
+            }
+            if (Sql.sqlite3_step(stmt) != Sql.SQLITE_DONE) {
+                throw new ArgumentException("SQL statement did not step to done");
+            }
+            if (Sql.sqlite3_finalize(stmt) != Sql.SQLITE_OK) {
+                throw new ArgumentException("Cannot finalize SQL statement");
+            }
+
+            return Sql.sqlite3_last_insert_rowid(_db);
         }
 
     }
