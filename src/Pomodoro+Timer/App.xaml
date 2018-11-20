@@ -21,6 +21,9 @@
         <vc:FalseToCollapsed
             x:Key="FalseToCollapsedConverter"
             />
+        <vc:DoubleToGridLength
+            x:Key="DoubleToGridLengthConverter"
+            />
 
         <!-- Colors -->
         <Color x:Key="PomodoroBackgroundColor">#FFA33C46</Color>

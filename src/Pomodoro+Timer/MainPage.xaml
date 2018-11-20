@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32" />
+            <RowDefinition Height="{Binding Path=TitleBarHeight, Mode=OneWay, Source={StaticResource ApplicationViewModel}, Converter={StaticResource DoubleToGridLengthConverter}}" />
             <RowDefinition Height="*" />
             <RowDefinition Height="32" />
         </Grid.RowDefinitions>
