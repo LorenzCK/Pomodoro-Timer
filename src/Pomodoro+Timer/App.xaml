@@ -24,6 +24,9 @@
         <vc:DoubleToGridLength
             x:Key="DoubleToGridLengthConverter"
             />
+        <vc:RemainingTimeConverter
+            x:Key="RemainingTimeConverter"
+            />
 
         <!-- Colors -->
         <Color x:Key="PomodoroBackgroundColor">#FFA33C46</Color>

@@ -17,7 +17,7 @@ namespace PomodoroTimer.ViewModels {
             return true;
         }
 
-        private void OnPropertyChanged([CallerMemberName]string propertyName = null) {
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 

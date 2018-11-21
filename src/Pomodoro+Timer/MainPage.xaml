@@ -54,7 +54,7 @@
                     Thickness="15"
                     Minimum="0"
                     Maximum="100"
-                    Value="50"
+                    Value="{x:Bind Path=Model.Progress, Mode=OneWay}"
                     />
 
                 <ToggleButton
@@ -256,7 +256,7 @@
         <TextBlock
             Grid.Column="1"
             Grid.Row="2"
-            Text="00:00"
+            Text="{x:Bind Path=Model.Remaining, Mode=OneWay, Converter={StaticResource RemainingTimeConverter}}"
             FontFamily="{StaticResource PTMonoFont}"
             FontSize="20"
             Foreground="#FFEDEADC"

@@ -1,6 +1,7 @@
 ﻿using PomodoroTimer.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -45,9 +46,15 @@ namespace PomodoroTimer {
             System.Diagnostics.Debug.WriteLine("On navigated to, title bar height: " + coreTitleBar.Height);
         }
 
-        private void ButtonToggle_Click(object sender, RoutedEventArgs e) {
+        private async void ButtonToggle_Click(object sender, RoutedEventArgs e) {
             var sb = (Storyboard)ButtonToggle.Resources[(ButtonToggle.IsChecked.GetValueOrDefault(false)) ? "ActivateStoryboard" : "DectivateStoryboard"];
             sb.Begin();
+
+            long id = await DatabaseAccess.NewRun();
+
+            await DatabaseAccess.CompleteRun(id);
+
+            Debug.WriteLine("Completed run " + id);
         }
     }
 
